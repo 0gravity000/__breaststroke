@@ -4,6 +4,9 @@
       <li class="list-group-item">
         <router-link to="/my-experiment-01">実験01</router-link>
       </li>
+      <li class="list-group-item">
+        <router-link to="/my-experiment-02">実験02</router-link>
+      </li>
     </ul>
   </div>
 </template>
