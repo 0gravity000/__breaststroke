@@ -1,8 +1,23 @@
 <template>
   <div class="my-experiment-02">
     <h2>a要素を出力する</h2>
+    <form>
+      <div class="mb-3">
+        <label for="exampleInputEmail1" class="form-label">URL</label>
+        <input v-model="this.targetUrl" class="form-control" placeholder="URLを入力してください">
+      </div>
+      <div class="mb-3">
+        <label for="exampleInputPassword1" class="form-label">セレクター</label>
+        <input v-model="this.targetSelector" class="form-control" placeholder="セレクターを入力してください">
+      </div>
+      <button type="button" @click="crawlTargetUrl" class="btn btn-primary">送信</button>
+      <!--
+      <button type="submit" class="btn btn-primary">送信</button>
+      -->
+    </form>
+
     <div v-for="element in elements" :key="element">
-      <a :href="element.href">{{element.innerHTML}}</a>
+      <a :href="element.href" target="_blank" rel="noopener noreferrer">{{element.innerHTML}}</a>
     </div>
   </div>
 </template>
@@ -14,11 +29,13 @@ const axios = require('axios').default
 export default {
   data() {
     return {
+      targetUrl: "https://developer.mozilla.org/ja/docs/Web/API",
+      targetSelector: "a",
       elements: [],
     }
   },
   mounted() {
-    this.greeting()
+    //this.crawlTargetUrl()
     // CORSエラー 
     //Access to XMLHttpRequest at 'http://www.example.org/' from origin 'http://localhost:3000' has been blocked by CORS policy: Response to preflight request doesn't pass access control check: No 'Access-Control-Allow-Origin' header is present on the requested resource.
     /*
@@ -31,22 +48,32 @@ export default {
     */
   },
   methods: {
-    greeting: function(){
+    crawlTargetUrl: function(){
       let self = this;  //promiseコールバック関数内でthisは使えないので回避用 this.$router.push('/')
-      axios.get('/api/stroke')
+      axios.post('/api/stroke', { //バックエンドでbodyとして取得できる
+        targetUrl: self.targetUrl,
+        targetSelector: self.targetSelector,
+        /*
+        headers: {
+          Accept: 'application/json',
+          'Content-Type': 'application/json',
+        },
+        body: 
+          JSON.stringify({
+            targetUrl: self.targetUrl,
+            targetSelector: self.targetSelector,
+        }),
+        */
+      })
       .then(function (res) {
         console.log(res.data)
         self.elements = res.data
       })
-      .catch(
-        (err) => {console.log(err)}
-      )
+      .catch(function (err){
+        console.log(err)
+        self.elements = err.data
+      })
     },
-    /*
-    reqListener () {
-      console.log(this.responseText);
-    }
-    */
   },
 }
 </script>
