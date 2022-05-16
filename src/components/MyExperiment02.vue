@@ -50,7 +50,7 @@ export default {
   methods: {
     crawlTargetUrl: function(){
       let self = this;  //promiseコールバック関数内でthisは使えないので回避用 this.$router.push('/')
-      axios.post('/api/stroke', { //バックエンドでbodyとして取得できる
+      axios.post('/api/stroke/ahref', { //バックエンドでbodyとして取得できる
         targetUrl: self.targetUrl,
         targetSelector: self.targetSelector,
         /*

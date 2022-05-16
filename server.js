@@ -17,7 +17,7 @@ app.get('/', (req, res) => {
     res.sendFile(__dirname + '/dist/index.html')
 })
 
-app.post('/api/stroke', (req, res) => {
+app.post('/api/stroke/ahref', (req, res) => {
     console.log(req.body);
     console.log(Object.keys(req.body));
     console.log(req.body.targetUrl);
